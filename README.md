@@ -1,5 +1,5 @@
 # scrumToolProject
-#This is a scrum web-tool Project. The features and functionalities offered are listed as below.Please note all the functionalities have been implemented as listed below, with minimum preference to look and feel.
+# This is a scrum web-tool Project. The features and functionalities offered are listed as below.Please note all the functionalities have been implemented as listed below, with minimum preference to look and feel.
 
 Product backlog items
 
