@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        body    { padding-top:30px;
+            background-color: #b9def0 ;
+            color:#2d4373;
+        }
+    </style>
+
+    <!-- JS ===================== -->
+    <!-- load angular -->
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <base href="/">
+</head>
+
+<!-- apply angular app and controller to our body -->
+<body ng-app="mainApp" bgcolor="aqua">        <div ng-controller="developers">
+                    <select id="myselections" ng-model="projecti.selectedproject" ng-options="c.name for c in projec"></select>
+                    Selected Project: {{projecti.selectedproject.name}}
+
+                <select id="myselection" multiple="true" ng-model="projecti.selecteddevelopers" ng-options="c.usernam for c in developer"></select>
+                
+        Selected Multiple Developers: {{projecti.selecteddevelopers.usernam }}
+            
+                
+
+            <button type="submit" ng-click="update(projecti)" class="btn btn-primary" >Submit</button>
+</div>
+            <script>
+            var app= angular.module('mainApp',[]);
+            app.controller('developers',['$scope','$http',function($scope,$http){
+
+
+$http.get('/projects').success(function(response){
+        var abc=JSON.stringify(response);
+        //console.log("i am"+abc)
+        $scope.projec=response; 
+        //$scope.selecteddevelopers = [$scope.developer[0], $scope.developer[1]];
+    })
+
+
+  $http.get('/project/users').success(function(response){
+        var abc=JSON.stringify(response);
+        //console.log("i am"+abc)
+        $scope.developer=response; 
+        //$scope.selecteddevelopers = [$scope.developer[0], $scope.developer[1]];
+    })
+  console.log()
+  $scope.update = function(projecti) {
+               console.log("hi")
+           $http.post('/projects', $scope.projecti)
+           location.href = '/projectview';
+             $route.reload();
+
+       }
+      
+}]);
+
+        </script>
+        </body>
+</html>

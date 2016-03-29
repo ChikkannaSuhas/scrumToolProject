@@ -1,0 +1,101 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        body    {
+            padding-top:30px;
+            background-color: #b9def0 ;
+            color:#2d4373;
+        }
+
+    </style>
+
+    <!-- JS ===================== -->
+    <!-- load angular -->
+   <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+</head>
+
+<!-- apply angular app and controller to our body -->
+<body ng-app="validationApp" ng-controller="mainController">
+<div class="container">
+    <div class="col-sm-8 col-sm-offset-2">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header"><h1>User Registration</h1></div>
+
+        <!-- FORM -->
+        <!-- pass in the variable if our form is valid or invalid -->
+        <form name="userForm"> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+
+            <!-- NAME -->
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="usernamename" class="form-control" ng-model="register.username" required>
+            </div>
+
+            <!-- USERNAME -->
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" ng-model="register.password" required>
+            </div>
+            <div class="form-group">
+                <label>Re Enter Password</label>
+                <input type="password" name="repassword" class="form-control" ng-model="register.repassword" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" name="email" class="form-control" ng-model="register.email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Product Owner</label>
+                <input type="checkbox" value=" product owner" ng-model="register.productowner"
+                       ng-true-value="'YES'" ng-false-value="'NO'">
+            </div>
+            <div class="form-group">
+                <label>Scrum Master</label>
+                <input type="checkbox" value=" Scrum Master" ng-model="register.scrummaster"
+                       ng-true-value="'YES'" ng-false-value="'NO'">
+            </div>
+            <!-- SUBMIT BUTTON -->
+            <br/>
+            <button type="submit" class="btn btn-primary" ng-click="update(register)" >Register</button>
+            <input type="button" onclick="window.location.href='/'" value="Login" class="btn btn-primary" />
+            <input type="button" ng-click="reset()" value="Reset" class="btn btn-primary"/>
+        </form>
+    </div><!-- col-sm-8 -->
+</div><!-- /container -->
+<script>
+var app= angular.module('validationApp',['ngRoute']);
+app.config(function($routeProvider,$locationProvider) {
+    $routeProvider
+        .when('/',
+    {
+        redirectTo: '/'
+
+    })
+$locationProvider.html5Mode(true);
+});
+    //angular.module('validationApp', [])
+    app.controller('mainController',['$scope','$http',function($scope,$http){
+           //app.controller('mainController', ['$scope','$http', function($scope,$http) {
+                $scope.master = {};
+
+                $scope.update = function(register) {
+                    $scope.master = angular.copy(register);
+                    $http.post('/registeration', $scope.register);
+                };
+                $scope.reset = function() {
+                    $scope.register = angular.copy($scope.master);
+                };
+                $scope.reset();
+            }]);
+</script>
+</body>
+</html>
+

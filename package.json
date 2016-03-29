@@ -1,0 +1,25 @@
+{
+  "name": "teamoscar",
+  "version": "1.0.0",
+  "description": "TK Project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.1",
+    "express": "4.0",
+    "express-session": "^1.13.0",
+    "lodash": "^4.0.1",
+    "method-override": "^2.3.5",
+    "mongoose": "^4.3.7",
+    "node-restful": "^0.2.5",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "socket.io": "^1.4.5"
+  },
+  "author": "mohammad tabish akhtar",
+  "license": "ISC"
+}

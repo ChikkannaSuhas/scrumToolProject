@@ -1,0 +1,85 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        body    { padding-top:30px;
+            background-color: #b9def0 ;
+            color:#2d4373;
+        }
+    </style>
+
+    <!-- JS ===================== -->
+    <!-- load angular -->
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <base href="/">
+</head>
+
+<!-- apply angular app and controller to our body -->
+<body ng-app="mainApp" bgcolor="aqua">
+<div class="container">
+    <div class="col-sm-8 col-sm-offset-2">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header"><h1><center>New Project </center></h1></div>
+
+        <!-- FORM -->
+        <!-- pass in the variable if our form is valid or invalid -->
+        <form name="projectform"> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+            <div ng-controller="loginCtrl">
+            <!-- NAME -->
+            <div class="form-group">
+                <label>Project Name</label>
+                <input type="text" name="project name" class="form-control" ng-model="project.name" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" class="form-control" ng-model="project.description" required> </textarea>
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select name="singleSelect" id="singleSelect" ng-model="project.singleSelect">
+                    <option value="">--- select type---</option> <!-- not selected / blank option -->
+                    <option value="New"> New </option> <!-- interpolation -->
+                    <option value="Fix for a Bug">Fix for a Bug</option>
+                    <option value="Enhancement">Enhancement</option>
+                </select>
+            </div>
+            <button type="submit" ng-click="update(project)" class="btn btn-primary">Submit</button>
+        </div>
+            <input type="button" onclick="window.location.href='/projectview'" value="Back to projects"  class="btn btn-primary"/>
+            <input type="button" ng-click="reset()" value="Reset" class="btn btn-primary"/>
+
+        </form>
+        <script>
+            var app= angular.module('mainApp',['ngRoute']);
+            app.config(function($routeProvider,$locationProvider) {
+    $routeProvider
+        .when('/pro/project',
+    {
+        redirectTo: '/pro/project'
+
+    })
+        $locationProvider.html5Mode(true);
+    })
+
+ app.controller('loginCtrl',['$scope','$http','$location','$route',function($scope,$http,$location,$route){
+            
+            $scope.update = function(project) {
+               console.log($scope.project)
+           $http.post('/project', $scope.project)
+            console.log("he")
+            location.href = '/pro/project';
+             $route.reload();
+
+       }
+            }]);
+        </script>
+    </div>
+</div>
+</body>
+</html>

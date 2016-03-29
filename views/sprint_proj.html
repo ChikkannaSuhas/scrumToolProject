@@ -1,0 +1,95 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        body    { padding-top:30px;
+            background-color: #b9def0 ;
+            color:#2d4373;
+        }
+    </style>
+
+    <!-- JS ===================== -->
+    <!-- load angular -->
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+</head>
+
+<!-- apply angular app and controller to our body -->
+<body ng-app="mainApp" bgcolor="aqua">
+<div class="container">
+    
+        <!-- PAGE HEADER -->
+        <div class="page-header"><h1><center>New Sprint</center></h1></div>
+
+    add product to backlog
+    <div ng-controller="Ctrl2"> <select id="myselections" ng-model="sprinti.selectedproject" ng-options="c.name for c in projec"></select>
+                    Selected Polors: {{sprinti.selectedproject }}
+
+                    <button type="submit" ng-click="backi(sprinti)" class="btn btn-primary">Submit</button>
+
+                <select id="myselection" multiple="true" ng-model="sprinti.selecteddevelopers" ng-options="c.name for c in developer"></select>
+                
+        Selected Multiple Backlogs: {{sprinti.selecteddevelopers }}
+            
+                
+
+            <button type="submit" ng-click="update(sprinti)" class="btn btn-primary">Submit</button></div>
+</div>
+<script>
+            var app= angular.module('mainApp',[]);
+
+app.controller('Ctrl2',['$scope','$http',function($scope,$http){
+
+
+$http.get('/projects').success(function(response){
+        //var abc=JSON.stringify(response);
+        //console.log("i am"+abc)
+        $scope.projec=response; 
+        //$scope.selecteddevelopers = [$scope.developer[0], $scope.developer[1]];
+    })
+
+
+  $scope.backi = function(sprinti)
+  {
+    var json = JSON.stringify($scope.sprinti);
+    var tr=json.indexOf("_id")
+    
+    var tt=json.substring(tr+6, tr+30)
+    console.log(tt)
+
+
+    /*, function(key,value){
+    if(key == "selectedproject"){
+        return value;
+    }
+    //return value;
+}*/
+    $scope.sprinti.abc=tt
+    console.log($scope.sprinti.abc)
+    $http.post('/proj_sprint',$scope.sprinti).success(function(response){
+        //var abc=JSON.stringify(response);
+        //console.log("i am"+abc)
+        $scope.developer=response; 
+        //$scope.selecteddevelopers = [$scope.developer[0], $scope.developer[1]];
+    })}
+  console.log()
+  $scope.update = function(sprinti) {
+               console.log("hi")
+               console.log($scope.sprinti.abc)
+           $http.post('/sprint_pr', $scope.sprinti)
+           console.log("he")
+            location.href = '/projectview/sprint';
+             $route.reload();
+       }
+
+           
+
+}]);
+
+</script>
+</body>
+</html>

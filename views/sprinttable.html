@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+ <base href="/">
+<style>
+    body    {
+        padding-top:30px;
+        background-color: #b9def0 ;
+        color:#2d4373;
+    }
+</style>
+</head>
+<body ng-app="Projects" ng-controller="AppCtrl1">
+<div class="w3-container">
+    <h1><center>NEW SPRINT</center></h1>
+    <table class="w3-table w3-bordered w3-striped" >
+        <tr>
+            <th>NAME</th>
+            <th>DESCRIPTION</th>
+            <th>TIME BOX</th>
+            <th>STATUS </th>
+            <th>TASKS</th>
+        </tr>
+        <tr ng-repeat = "sprints in sprintsi">
+            <td>{{sprints.sprintname}}</td>
+            <td> {{sprints.sprintdesc}}</td>
+            <td> {{sprints.timebox}}</td>
+            <td>{{sprints.sprintstatus}}</td>
+            <td> <a href ="/projectview/sprint/task">Tasks</a> </td>
+        </tr>
+    </table>
+    <input type="button" onclick="window.location.href='/projectview/sprint/sprint'" value="NewSprint" class="btn btn-primary" />
+    <input type="button" value="Home" ng-click="out()" class="btn btn-primary" />
+    <br>
+</div>
+<script>
+var app = angular.module('Projects',['ngRoute'])
+app.config(function($routeProvider,$locationProvider) {
+    $routeProvider
+        .when('/projects',
+    {
+        redirectTo: '/projects'
+
+    })
+.when('/projectview/sprint/sprint',
+    {
+        redirectTo: '/projectview/sprint/sprint'
+    })
+.when('/projectview/sprint/task',
+    {
+        redirectTo: '/projectview/sprint/task'
+    })
+    .when('/projectview/backlog',
+    {
+
+        redirectTo: '/projectview/backlog'
+
+    });
+$locationProvider.html5Mode(true);
+});
+app.controller('AppCtrl1',function($scope,$http){
+    $scope.out=function() {
+        location.href = '/index';
+             $route.reload();
+    }
+    function loadProject() {
+        $http.get('/sprint/sprints').success(function (projectsi) {
+            $scope.sprintsi = projectsi;
+            console.log(projectsi)
+        })
+    }
+    loadProject();
+})</script>
+</body>
+</html>

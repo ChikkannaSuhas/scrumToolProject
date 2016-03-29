@@ -1,0 +1,103 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        body    { padding-top:30px;
+                  background-color: #b9def0 ;
+                  color:#2d4373;
+                }
+    </style>
+
+    <!-- JS ===================== -->
+    <!-- load angular -->
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    
+</head>
+
+<!-- apply angular app and controller to our body -->
+<body ng-app="validationApp" ng-controller="developers" bgcolor="aqua">
+<div class="container">
+    <div class="col-sm-8 col-sm-offset-2">
+        <select id="myselections" ng-model="back.selectedproject" ng-options="c.name for c in bac"></select>
+                    Selected Polors: {{back.selectedproject }}
+        <!-- PAGE HEADER -->
+        <div class="page-header"><h1>Productbacklog Item </h1></div>
+
+        <!-- FORM -->
+        <!-- pass in the variable if our form is valid or invalid -->
+        <form name="projectform"> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+
+            <!-- NAME -->
+            <div class="form-group">
+                <label>Productbacklog Item Name</label>
+                <input type="text" name="productbacklogitem" class="form-control" ng-model="back.name" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" class="form-control" ng-model="back.description" required> </textarea>
+            </div>
+            <div class="form-group">
+                <label>Priority</label>
+                <input type="number" name="priotity" class="form-control" ng-model="back.priority" required> </input>
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select name="singleSelect" id="singleSelect1" ng-model="back.type">
+                    <option value="">--- select type---</option> <!-- not selected / blank option -->
+                    <option value="option1"> New </option> <!-- interpolation -->
+                    <option value="option-2">Fix for a Bug</option>
+                    <option value="option-3">Enhancement</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select name="singleSelect" id="singleSelect" ng-model="back.status">
+                    <option value="">--- select status---</option> <!-- not selected / blank option -->
+                    <option value="option1"> New </option> <!-- interpolation -->
+                    <option value="option-2">In-progress</option>
+                    <option value="option-3">Completed</option>
+                </select>
+            </div>
+
+            <button type="submit" ng-click="update(back)" class="btn btn-primary">Create New</button>
+            <button type="submit" ng-click="upd(back)" class="btn btn-primary">Update Backlog</button>
+            <input type="button" ng-click="reset()" value="Reset" class="btn btn-primary"/>
+        </form>
+    </div>
+</div>
+<script>
+            var app= angular.module('validationApp',[]);
+            app.controller('developers',['$scope','$http',function($scope,$http){
+
+
+$http.get('/projects').success(function(response){
+        var abc=JSON.stringify(response);
+        //console.log("i am"+abc)
+        $scope.bac=response; 
+        //$scope.selecteddevelopers = [$scope.developer[0], $scope.developer[1]];
+    })
+
+  console.log()
+
+$scope.upd = function(back) {
+               console.log("hi")
+           $http.post('/upbacklog', $scope.back)
+       location.href = '/index';
+             $route.reload();}
+
+  $scope.update = function(back) {
+               console.log("hi")
+           $http.post('/backlog', $scope.back)
+       location.href = '/index';
+             $route.reload();}
+      
+}]);
+
+        </script>
+</body>
+</html>

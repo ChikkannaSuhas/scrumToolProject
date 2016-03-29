@@ -1,0 +1,99 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        body    {
+            padding-top:30px;
+            background-color: #b9def0 ;
+            color:#2d4373;
+        }
+
+    </style>
+
+    <!-- JS ===================== -->
+    <!-- load angular -->
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+ <base href="/">
+</head>
+
+<!-- apply angular app and controller to our body -->
+<body ng-app="mainApp" ng-controller="loginCtrl">
+<div class="container">
+    <div class="col-sm-8 col-sm-offset-2">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header"><h1>Login</h1></div>
+
+        <!-- FORM -->
+        <!-- pass in the variable if our form is valid or invalid -->
+        <form name="userForm"> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+
+            <!-- NAME -->
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="usernamename" class="form-control" ng-model="login.username" required>
+            </div>
+
+            <!-- USERNAME -->
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" ng-model="login.password" required>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" class="btn btn-primary" ng-click="update(login)">Login</button>
+            <input type="button" onclick="window.location.href='/registeration'" value="Register" class="btn btn-primary"/>
+            <input type="button" ng-click="reset()" value="Reset" class="btn btn-primary"/>
+        </form>
+    </div><!-- col-sm-8 -->
+</div><!-- /container -->
+<script>
+
+var app= angular.module('mainApp',['ngRoute']);
+app.config(function($routeProvider,$locationProvider) {
+    $routeProvider
+        .when('/',
+    {
+        redirectTo: '/'
+
+    })
+.when('/registeration',
+    {
+        redirectTo: '/registeration'
+    })
+    .when('/index',
+    {
+
+        redirectTo: '/index'
+
+    });
+$locationProvider.html5Mode(true);
+});
+
+            app.controller('loginCtrl',['$scope','$http','$route','$location',function($scope,$http,$location,$route){
+                $scope.master = {};
+
+                $scope.reset = function() {
+                    $scope.login = angular.copy($scope.master);
+                };
+                $scope.reset();
+    $scope.update = function(login) {
+                    $scope.master = angular.copy(login);
+                    
+                    $http.post('/login', $scope.login)
+                    .success(function (data) {
+        if(data.status==200)
+            
+            // $location.url('/index');
+             location.href = '/index';
+             $route.reload();
+         })
+}}]);
+</script>
+</body>
+</html>

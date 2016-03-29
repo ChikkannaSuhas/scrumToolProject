@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html><head>
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+ <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+ <base href="/">
+<style>
+    body    {
+        padding-top:30px;
+        background-color: #b9def0 ;
+        color:#2d4373;
+    }
+
+</style>
+</head>
+<body ng-app="Projects" ng-controller="AppCtrl1">
+<div class="w3-container">
+    <h1><center>PROJECTS</center></h1>
+    <table class="w3-table w3-bordered w3-striped" >
+        <tr>
+            <th>NAME</th>
+            <th>DESCRIPTION</th>
+            <th>STATUS</th>
+            <th> PRODUCT BACKLOGS</th>
+            <th> SPRINTS</th>
+        </tr>
+        <tr ng-repeat = "project in projects">
+            <td>{{project.name}}</td>
+            <td> {{project.desc}}</td>
+            <td>{{project.Type}}</td>
+            <td> <a href = "/projectview/backlog">productbacklogs</a> </td>
+            <td> <a href="/projectview/sprint">sprint</a></td>
+        </tr>
+    </table>
+    <input type="button" id="newproject" onclick="window.location.href='/pro'" value="NewProject" class="btn btn-primary" />
+    <input type="button" value="Logout" ng-click="out()" class="btn btn-primary" />
+    <br>
+</div>
+
+
+<script>
+var Proj = angular.module('Projects',['ngRoute'])
+Proj.config(function($routeProvider,$locationProvider) {
+    $routeProvider
+        .when('/projects',
+    {
+        redirectTo: '/projects'
+
+    })
+.when('/proj',
+    {
+        redirectTo: '/pro'
+    })
+.when('/projectview/sprint',
+    {
+        redirectTo: '/projectview/sprint'
+    })
+    .when('/projectview/backlog',
+    {
+
+        redirectTo: '/projectview/backlog'
+
+    });
+$locationProvider.html5Mode(true);
+});
+Proj.controller('AppCtrl1',function($scope,$http){
+
+
+    $scope.out=function() {
+        $http.get('logout')
+        location.href = '/';
+             $route.reload();
+    }
+
+    function loadProject() {
+        $http.get('/projects').success(function (projectsi) {
+            $scope.projects = projectsi;
+            console.log(projectsi)
+        })
+        $http.get('/currentuser').success(function (data) {
+            if(data.productowner=='YES') {
+            document.getElementById('newproject').style.visibility = 'visible';
+        } else {
+            document.getElementById('newproject').style.visibility = 'hidden';
+        }
+        })
+
+    }
+    loadProject();
+})</script>
+</body>
+</html>

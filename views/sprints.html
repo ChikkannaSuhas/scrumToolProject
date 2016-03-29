@@ -1,0 +1,96 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        body    { padding-top:30px;
+            background-color: #b9def0 ;
+            color:#2d4373;
+        }
+    </style>
+
+    <!-- JS ===================== -->
+    <!-- load angular -->
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+</head>
+
+<!-- apply angular app and controller to our body -->
+<body ng-app="mainApp" bgcolor="aqua">
+<div class="container">
+    <div ng-controller="loginCtrl" class="col-sm-8 col-sm-offset-2">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header"><h1><center>New Sprint</center></h1></div>
+
+        <!-- FORM -->
+        <!-- pass in the variable if our form is valid or invalid -->
+        <form name="projectform"> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+         
+         
+    <select id="myselections" ng-model="sprint.selectedproject" ng-options="c.name for c in projec"></select>
+                    Selected Project: {{sprint.selectedproject }}
+            <!-- NAME -->
+            <div class="form-group">
+                <label>Sprint Name</label>
+                <input type="text" name=" sprintname" class="form-control" ng-model="sprint.name" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" class="form-control" ng-model="sprint.description" required> </textarea>
+            </div>
+            <div class="form-group">
+                <label>Timebox</label>
+                <input type="text" name="timebox" class="form-control" ng-model="sprint.timebox" required> </input>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                    <select name="singleSelect" id="singleSelect" ng-model="sprint.status">
+      <option value="">---Please select---</option> <!-- not selected / blank option -->
+      <option value="In Progress">In Progress</option> <!-- interpolation -->
+      <option value="Done">Done</option>
+    </select>
+                {{sprint.status}}
+            </div>
+         
+
+            <button type="submit" ng-click="update(sprint)" class="btn btn-primary">Submit</button>
+            <input type="button" id="updatesprint" onclick="window.location.href='/pro'" value="Update Sprint" class="btn btn-primary" />
+            <input type="button" onclick="window.location.href='/projectview/sprint'" value="Back to sprints"  class="btn btn-primary"/>
+            <input type="button" ng-click="reset()" value="Reset" class="btn btn-primary"/>
+            
+        </form>
+    </div>
+
+</div>
+
+
+
+<script>
+            var app= angular.module('mainApp',[]);
+
+ app.controller('loginCtrl',['$scope','$http',function($scope,$http){
+            //$scope.project.name="anddd"
+            //$scope.project.description="asdsdf"
+            //$scope.project.type=1
+            //$scope.selecteddevelopers;
+            //$scope.scrummaster=$scope.selecteddevelopers[1]
+            $http.get('/projects').success(function(response){
+        $scope.projec=response;})
+            $scope.update = function(sprint) {
+              // console.log($scope.project)
+           $http.post('/sprint', $scope.sprint)
+console.log("he")
+            location.href = '/projectview/sprint/sprint/sprintproj';
+             $route.reload();
+       }
+            }]);
+
+</script>
+</body>
+</html>
+

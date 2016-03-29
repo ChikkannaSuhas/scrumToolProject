@@ -1,0 +1,47 @@
+<html >
+
+  <head>
+    
+    <title>AngularJS Plunker</title>
+    <script data-require="angular.js@1.2.x" src="http://code.angularjs.org/1.2.7/angular.js" data-semver="1.2.7"></script>
+  </head>
+
+  <body>
+    
+   <div ng-app="sampleproject">
+    <div ng-controller="Ctrl1">Controller 1: {{foo}}</div>
+    <div ng-controller="Ctrl2">
+{{count}}
+      Controller 2: {{foo}}</div>
+</div>
+
+</div>
+
+<script>
+var app = angular.module('sampleproject', []);
+
+app.factory('Service', function() {
+  var Service = {
+    foo: 'Shared service'
+  };
+  return Service;
+});
+
+app.controller('Ctrl1', function($scope, Service) {
+  $scope.foo = Service.foo;
+  Service.foo = 'I am from contoller 1';
+});
+
+app.controller('Ctrl2', function($scope, Service) {
+  $scope.foo = Service.foo;
+  $scope.count = 0;
+  $scope.$watch('foo', function() {
+        // do something here
+        $scope.count += 1;
+    }, true);
+});
+</script>
+
+  </body>
+
+</html>

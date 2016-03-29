@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/bower_components/bootstrap/dist/css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body bgcolor="green">
+
+<div ng-app="mainApp" id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li>
+                <a href="/edit">EditProfile </a>
+            </li>
+
+            <li>
+                <a href="/projectview">view projects</a>
+            </li>
+            <li>
+                <a href="/chats">Chat with users</a>
+            </li>
+            <li>
+                <a href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1><center><font color="#2d4373"> The Scrum Project </font></center></h1>
+                <p> <font color="#2d4373" size="5">Scrum is an agile methodology followed by many industries these days</font></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script> 
+     
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+<script>
+
+var app = angular.module('mainApp', ['ngRoute']) {
+    app.config(function($routeProvider,$locationProvider) {
+    $routeProvider
+        .when('/edit',
+    {
+        redirectTo: '/edit'
+
+    })
+.when('/projectview',
+    {
+        redirectTo: '/projectview'
+    })
+.when('/logout',
+    {
+        redirectTo: '/login'
+    })
+    .when('/chats',
+    {
+
+        redirectTo: '/chats'
+
+    });
+$locationProvider.html5Mode(true);
+});
+</script>
+
+
+</body>
+
+</html>

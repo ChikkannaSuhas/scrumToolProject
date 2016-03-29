@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<style>
+    body    {
+        padding-top:30px;
+        background-color: #b9def0 ;
+        color:#2d4373;
+    }
+</style>
+<script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+ <base href="/">
+</head>
+<body ng-app="mainApp" ng-controller="loginCtrl">
+<div class="w3-container">
+    <h1><center>TASKS</center></h1>
+    <table class="w3-table w3-bordered w3-striped" >
+        <tr>
+            <th>NAME</th>
+            <th>SPRINT BACKLOG</th>
+            <th>ASSIGNED TO</th>
+            <th> STATUS </th>
+            <th> SPRINTS</th>
+        </tr>
+        <tr ng-repeat = "tasks in tasksi">
+            <td>{{tasks.taskname}}</td>
+            <td> {{tasks.tasksprintbacklog}}</td>
+            <td>{{tasks.assignedto}}</td>
+            <td>{{tasks.taskstatus}}</td>
+            <td> <a href="/projectview/sprint">sprints</a></td>
+        </tr>
+    </table>
+    <input type="button" onclick="window.location.href='/projectview/sprint/task/tasks'" value="NewTask" class="btn btn-primary" />
+    <br>
+</div>
+<script >
+var app= angular.module('mainApp',[]);
+app.controller('loginCtrl',['$scope','$http',function($scope,$http){
+                
+    function loadProject() {
+        $http.get('/tasks').success(function (projectsi) {
+            $scope.tasksi = projectsi;
+            console.log(projectsi)
+        })
+    }
+    loadProject();
+}]);
+
+</script>
+</body>
+</html>

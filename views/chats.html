@@ -1,0 +1,104 @@
+<html>
+<head>
+    <title> Chat with socket.io and node.js</title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <style>
+        #chat{
+            height:500px;
+        }
+        #contentWrap{
+            display:none;
+        }
+        #chatWrap{
+            float:left;
+            border:1px #000 solid;
+        }
+        .error{
+            color: red;
+        }
+        .whisper{
+            color: grey;
+            font-style: italic;
+        }
+    </style>
+    <!--<script src="node_modules/jquery/src/jquery.js"></script>-->
+    <!--<script src="/jquery-latest.min.js"></script>-->
+</head>
+<body>
+<div id="nickWrap">
+    <p>Enter your name for this scrum chat:</p>
+    <p id="nickError"></p>
+    <form id="setNick">
+        <input size="35" id="nickname">
+        <input type="submit">
+    </form>
+</div>
+
+<div id="contentWrap">
+    <div id="chatWrap">
+        <div id="chat"></div>
+        <form id="send-message">
+
+            <input size="35" id="message">
+            <input type="submit">
+        </form>
+    </div>
+    <button type="button" class="btn btn-primary"><div id="users"></div>
+    <!--<button type="button" class="btn btn-primary"><div id="users"></div></button>-->
+</div>
+<!--<script type="text/javascript" src="/dist/jquery.js"></script>-->
+<script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script>
+    jQuery(function($){
+        var socket = io.connect();
+        console.log("connected")
+        var $nickForm = $('#setNick');
+        var $nickError = $('#nickError');
+        var $nickBox = $('#nickname');
+        var $users = $('#users');
+        var $messageForm  = $('#send-message');
+        var $messageBox = $('#message');
+        var $chat = $('#chat');
+        $nickForm.submit(function(e){
+            e.preventDefault();
+            socket.emit('new user', $nickBox.val(),function(data){
+            if(data){
+                $('#nickWrap').hide();
+                $('#contentWrap').show();
+            }else{
+                $nickError.html('That username is already Taken! Try again');
+            }
+            });
+            $nickBox.val('');
+        });
+
+        socket.on('usernames', function(data){
+            var html = '';
+            for(i=0; i< data.length; i++){
+                html += data[i] + '<br/>'
+            }
+            $users.html(html);
+        })
+        $messageForm.submit(function(e){
+            e.preventDefault();
+            socket.emit('send message', $messageBox.val(), function(data){
+                $chat.append('<spam class="error">' + data + "</spam><br/>");
+            });
+            $messageBox.val('');
+        });
+
+        socket.on('new message', function(data){
+            $chat.append('<spam class="msg"><b>' + data.nick + ':</b>' + data.msg + "</spam><br/>");
+        });
+        socket.on('whisper', function(data){
+            $chat.append('<spam class="whisper"><b>' + data.nick + ':</b>' + data.msg + "</spam><br/>");
+        });
+    });
+</script>
+</body>
+</html>
